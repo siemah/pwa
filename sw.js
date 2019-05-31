@@ -15,3 +15,19 @@ self.addEventListener('install', event => {
       })
   );
 }); 
+
+// activate event to catch and prefetch changes in files
+self.addEventListener('activate', event => {
+  console.log("activate event ", event);
+  event.waitUntil(
+    caches.keys()
+      .then( keysList => {
+        console.log("keys List ", keysList);
+        return Promise.all(
+          keysList.map(key => {
+            if( key !== STATIC_CACHE ) return caches.delete(key);
+          })
+        );
+      })
+  );
+})
