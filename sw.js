@@ -30,4 +30,21 @@ self.addEventListener('activate', event => {
         );
       })
   );
-})
+});
+
+// handle a fetch request
+self.addEventListener('fetch', event => {
+  let { request } = event
+  console.log("fetch a ", request.url);
+  if( request.mode !== 'navigate') return;
+  event.respondWith(
+    fetch(request.url)
+      .catch(() => {
+        return caches.open(STATIC_CACHE)
+        .then(cache => {
+          console.log("match", cache)
+            return cache.match('offline.html')
+          });
+      }) 
+  );
+});
