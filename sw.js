@@ -38,17 +38,28 @@ self.addEventListener('activate', event => {
 
 // handle a fetch request
 self.addEventListener('fetch', event => {
-  let { request } = event
-  console.log("fetch a ", request.url);
-  if( request.mode !== 'navigate') return;
+  //in case asking to get data from api https://api.pray.zone/v2/times/today.json?city=setif
+  if( event.request.url.icludes('api.pray.zone') ) {
+    console.log("ServiceWorker fetch data from ", event.request.url)
+    event.respondWith(
+      caches.open(DATA_CACHE_NAME).then(cache => {
+        return fetch(event.request).then(response => {
+          // if we retrieve data from network with success
+          if( response.status === 200 ) cache.put(event.request.url, response.clone());
+          return response;
+        }).catch(err => {
+          // in case the user are offline or cant reach end point
+          console.log("ServiceWorker can't fetching data from ", event.request.url);
+          return cache.match(event.request);
+        })
+      })
+    );
+    return;
+  }
+  // other cases of fetching ..
   event.respondWith(
-    fetch(request.url)
-      .catch(() => {
-        return caches.open(STATIC_CACHE)
-        .then(cache => {
-          console.log("match", cache)
-            return cache.match('offline.html')
-          });
-      }) 
-  );
+    caches.open(STATIC_CACHE).then(cache => {
+      return cache.match(event.request).then(response => response || fetch(event.request));
+    })
+  )
 });
