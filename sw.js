@@ -1,8 +1,11 @@
 // version of service worker for a static files
 const STATIC_CACHE = 'static-cache-v1';
+const DATA_CACHE_NAME = 'data-cache-v1';
 // static file to be cached 
 const STATIC_CACHED_FILES = [
-  'offline.html'
+  'offline.html',
+  'publlic/js/app.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css',
 ]
 
 // install event
@@ -25,7 +28,8 @@ self.addEventListener('activate', event => {
         console.log("keys List ", keysList);
         return Promise.all(
           keysList.map(key => {
-            if( key !== STATIC_CACHE ) return caches.delete(key);
+            if( key !== STATIC_CACHE && key !== DATA_CACHE_NAME ) 
+              return caches.delete(key);
           })
         );
       })
