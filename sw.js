@@ -13,7 +13,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then(cache => {
-        console.log("serviceworker pre-cache static files", cache);
+        //console.log("serviceworker pre-cache static files", cache);
         return cache.addAll(STATIC_CACHED_FILES);
       })
   );
@@ -21,11 +21,11 @@ self.addEventListener('install', event => {
 
 // activate event to catch and prefetch changes in files
 self.addEventListener('activate', event => {
-  console.log("activate event ", event);
+  //console.log("activate event ", event);
   event.waitUntil(
     caches.keys()
       .then( keysList => {
-        console.log("keys List ", keysList);
+        //console.log("keys List ", keysList);
         return Promise.all(
           keysList.map(key => {
             if( key !== STATIC_CACHE && key !== DATA_CACHE_NAME ) 
@@ -40,7 +40,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   //in case asking to get data from api https://api.pray.zone/v2/times/today.json?city=setif
   if( event.request.url.includes('api.pray.zone') ) {
-    console.log("ServiceWorker fetch data from ", event.request.url)
+    //console.log("ServiceWorker fetch data from ", event.request.url)
     event.respondWith(
       caches.open(DATA_CACHE_NAME).then(cache => {
         return fetch(event.request).then(response => {
@@ -49,7 +49,7 @@ self.addEventListener('fetch', event => {
           return response;
         }).catch(err => {
           // in case the user are offline or cant reach end point
-          console.log("ServiceWorker can't fetching data from ", event.request.url);
+          //console.log("ServiceWorker can't fetching data from ", event.request.url);
           return cache.match(event.request);
         })
       })

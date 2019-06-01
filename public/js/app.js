@@ -17,7 +17,7 @@ async function getCurrentTimesOfPraies(locationName = 'setif') {
   const response = await data.json();
   const { code, results } = response;
   if( code === 200 ) {
-    console.log(response);
+    //console.log(response);
     results.datetime.forEach(({times, date}) => {
       const { Fajr, Asr, Dhuhr, Imsak, Isha, Maghrib } = times;
       const render = `
