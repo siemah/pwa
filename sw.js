@@ -1,10 +1,10 @@
 // version of service worker for a static files
-const STATIC_CACHE = 'static-cache-v1';
-const DATA_CACHE_NAME = 'data-cache-v1';
+const STATIC_CACHE = 'static-cache-v2.1.0';
+const DATA_CACHE_NAME = 'data-cache-v2.1.0';
 // static file to be cached 
 const STATIC_CACHED_FILES = [
   'offline.html',
-  'publlic/js/app.js',
+  'public/js/app.js',
   'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css',
 ]
 
@@ -39,7 +39,7 @@ self.addEventListener('activate', event => {
 // handle a fetch request
 self.addEventListener('fetch', event => {
   //in case asking to get data from api https://api.pray.zone/v2/times/today.json?city=setif
-  if( event.request.url.icludes('api.pray.zone') ) {
+  if( event.request.url.includes('api.pray.zone') ) {
     console.log("ServiceWorker fetch data from ", event.request.url)
     event.respondWith(
       caches.open(DATA_CACHE_NAME).then(cache => {
