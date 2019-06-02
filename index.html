@@ -21,16 +21,35 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
+  <style>
+    h1, h2 {
+      font-size: 1.5rem;
+      font-family: serif;
+    }
+    span.badge.new:after {
+      display: none;
+    }
+    .mb-0 {
+      margin-bottom: 0 !important;
+    }
+  </style>
+
 </head>
 <body>
   
-  <h1 class="center">Home Page for PWA</h1>
-  <a href="about.html">About us</a>
+  <div class="container">
+    <h1 class="center mb-0">Prays time</h1>
+    
+    <h2 class="mb-0">Current times</h2>
+    <ul id="list" class="collection">
+      <!-- here put all data retrieve from pray api -->
+    </ul>
+            
+    
+    
+    <script src="public/js/app.js"></script>
 
-  <ul id="list"><!-- here put all data retrieve from pray api --></ul>
-
-
-  <script src="public/js/app.js"></script>
-
+  </div>
+  
 </body>
 </html>

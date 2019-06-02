@@ -1,6 +1,6 @@
 // version of service worker for a static files
-const STATIC_CACHE = 'static-cache-v2.1.1';
-const DATA_CACHE_NAME = 'data-cache-v2.1.0';
+const STATIC_CACHE = 'static-cache-v2.1.3';
+const DATA_CACHE_NAME = 'data-cache-v2.1.1';
 // static file to be cached 
 const STATIC_CACHED_FILES = [
   'offline.html',
