@@ -13,7 +13,7 @@ if( 'serviceWorker' in navigator) {
 
 async function getCurrentTimesOfPraies(locationName = 'setif') {
   const $list = document.querySelector('#list');
-  const data = await fetch(`https://api.pray.zone/v2/times/today.json?city=${locationName}`);
+  const data = await fetch(`https://api.pray.zone/v2/times/today.json?city=${locationName}&school=8`);
   const response = await data.json();
   const { code, results } = response;
   if( code === 200 ) {

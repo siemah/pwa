@@ -1,9 +1,10 @@
 // version of service worker for a static files
-const STATIC_CACHE = 'static-cache-v2.1.0';
+const STATIC_CACHE = 'static-cache-v2.1.1';
 const DATA_CACHE_NAME = 'data-cache-v2.1.0';
 // static file to be cached 
 const STATIC_CACHED_FILES = [
   'offline.html',
+  './',
   'public/js/app.js',
   'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css',
 ]
@@ -48,6 +49,7 @@ self.addEventListener('fetch', event => {
           if( response.status === 200 ) cache.put(event.request.url, response.clone());
           return response;
         }).catch(err => {
+          console.log("error", err)
           // in case the user are offline or cant reach end point
           //console.log("ServiceWorker can't fetching data from ", event.request.url);
           return cache.match(event.request);
