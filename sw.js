@@ -1,6 +1,6 @@
 // version of service worker for a static files
-const STATIC_CACHE = 'static-cache-v2.1.3';
-const DATA_CACHE_NAME = 'data-cache-v2.1.1';
+const STATIC_CACHE = 'static-cache-v2.1.9';
+const DATA_CACHE_NAME = 'data-cache-v2.1.3';
 // static file to be cached 
 const STATIC_CACHED_FILES = [
   'offline.html',
@@ -41,7 +41,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   //in case asking to get data from api https://api.pray.zone/v2/times/today.json?city=setif
   if( event.request.url.includes('api.pray.zone') ) {
-    //console.log("ServiceWorker fetch data from ", event.request.url)
+    //console.log("[ServiceWorker] fetch data from ", event.request.url)
     event.respondWith(
       caches.open(DATA_CACHE_NAME).then(cache => {
         return fetch(event.request).then(response => {
@@ -49,7 +49,7 @@ self.addEventListener('fetch', event => {
           if( response.status === 200 ) cache.put(event.request.url, response.clone());
           return response;
         }).catch(err => {
-          console.log("error", err)
+          //console.log("error", err)
           // in case the user are offline or cant reach end point
           //console.log("ServiceWorker can't fetching data from ", event.request.url);
           return cache.match(event.request);
@@ -57,10 +57,11 @@ self.addEventListener('fetch', event => {
       })
     );
     return;
-  }
+  } 
   // other cases of fetching ..
   event.respondWith(
     caches.open(STATIC_CACHE).then(cache => {
+      console.log(cache.keys().then(key => console.log("fetching...", key)));
       return cache.match(event.request).then(response => response || fetch(event.request));
     })
   )
