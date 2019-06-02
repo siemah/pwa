@@ -13,9 +13,8 @@ if( 'serviceWorker' in navigator) {
 
 const getTheNextPrayTime = (date, timeOfCurrentPray) => {
   let dateTimestamp = Date.now();
-  let prayTimestamp = new Date(`date `);
-
-  console.log("======>", timestamp);
+  let prayTimestamp = new Date(`${date} ${timeOfCurrentPray}`);
+  return prayTimestamp - dateTimestamp > 0 ? true : false; 
 }
 
 async function getCurrentTimesOfPraies(locationName = 'setif') {
@@ -27,13 +26,17 @@ async function getCurrentTimesOfPraies(locationName = 'setif') {
     //console.log(response);
     results.datetime.forEach(({times, date}) => {
       const { Fajr, Asr, Dhuhr, Imsak, Isha, Maghrib } = times;
-      getTheNextPrayTime(date.gregorian)
+      console.log(
+        "next time", 
+        getTheNextPrayTime(date.gregorian, Fajr),
+        getTheNextPrayTime(date.gregorian, Dhuhr)
+      );
       const render = `
         <li class='collection-item active green darken-3'>
           State: <b style='text-transform: capitalize'>${locationName}</b> 
           <span class="new badge green darken-4">${date.hijri} hijri</span>
         </li>
-        <li class='collection-item'>Fajr: ${Fajr}</li>
+        <li class='collection-item ${!getTheNextPrayTime(date.gregorian, Fajr)? "grey lighten-4" : ""}'>Fajr: ${Fajr}</li>
         <li class='collection-item'>Imsak: ${Imsak}</li>
         <li class='collection-item'>Dhuhr: ${Dhuhr}</li>
         <li class='collection-item'>Asr: ${Asr}</li>
